@@ -273,7 +273,7 @@ class MaskedMSELoss(BaseLoss):
         **kwargs,
     ):
         mask = ~torch.isnan(ground_truth['y'])
-        loss = 0.5 * torch.mean(
+        loss =  torch.mean(
             (prediction['y_hat'][mask] - ground_truth['y'][mask]) ** 2
         )
         return loss
@@ -307,7 +307,7 @@ class MaskedRMSELoss(BaseLoss):
             0.5
             * torch.mean(
                 (prediction['y_hat'][mask] - ground_truth['y'][mask]) ** 2
-            )
+            
         )
         return loss
 
@@ -342,7 +342,6 @@ class MaskedNSELoss(BaseLoss):
             additional_data=['per_basin_target_stds'],
         )
         self.eps = eps
-
     def _get_loss(
         self,
         prediction: dict[str, torch.Tensor],
@@ -400,8 +399,7 @@ class MaskedCMALLoss(BaseLoss):
         ground_truth: dict[str, torch.Tensor],
         **kwargs,
     ):
-        mask = ~torch.isnan(ground_truth['y']).any(1).any(1)
-        y = ground_truth['y'][mask]
+        mask = ~torch.isnan(ground_truth['y']).any(1).any(1)        y = ground_truth['y'][mask]
         m = prediction['mu'][mask]
         b = prediction['b'][mask]
         t = prediction['tau'][mask]
